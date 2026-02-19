@@ -15,13 +15,16 @@
             user-select: none;
             overflow: hidden;
             -webkit-tap-highlight-color: transparent;
+            /* Fix for mobile height */
+            height: 100dvh; 
+            width: 100vw;
+            overscroll-behavior: none;
         }
 
         /* Montessori Colors */
-        .text-consonant { color: #0ea5e9; /* Blue */ }
-        .text-vowel { color: #d946ef; /* Pink/Red */ }
+        .text-consonant { color: #0ea5e9; }
+        .text-vowel { color: #d946ef; }
         
-        /* Syllable Backgrounds */
         .bg-syllable-1 { background-color: #fce7f3; border-color: #fbcfe8; }
         .bg-syllable-2 { background-color: #e0f2fe; border-color: #bae6fd; }
         .bg-syllable-3 { background-color: #fef3c7; border-color: #fde68a; } 
@@ -68,16 +71,15 @@
         .perspective-1000 { perspective: 1000px; }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col items-center justify-center text-gray-800 bg-orange-50/50">
+<body class="flex flex-col items-center justify-center text-gray-800 bg-orange-50/50">
 
     <canvas id="confetti-canvas"></canvas>
 
     <!-- App Container -->
-    <!-- Responsive sizing: Full width/height on mobile, fixed rounded card on desktop/tablet -->
     <div id="app-container" class="w-full h-full md:h-[90vh] md:w-[600px] md:rounded-[40px] bg-white shadow-none md:shadow-2xl relative overflow-hidden flex flex-col md:border-4 md:border-white md:ring-4 md:ring-orange-50">
         
-        <!-- Header -->
-        <header id="app-header" class="h-16 px-4 md:px-6 bg-white border-b-2 border-orange-50 flex justify-between items-center z-20 shrink-0 hidden">
+        <!-- Header (Pastikan ini terlihat setelah login) -->
+        <header id="app-header" class="h-16 px-4 md:px-6 bg-white border-b-2 border-orange-50 flex justify-between items-center z-20 shrink-0 hidden w-full">
             <div class="flex items-center gap-2">
                 <button id="btn-home" class="p-2 -ml-2 rounded-full hover:bg-orange-50 text-orange-400 transition hidden">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -88,8 +90,8 @@
                 </div>
             </div>
             <div class="flex items-center gap-1.5 md:gap-2">
-                <div id="user-pill" class="bg-blue-50 px-2 py-1 md:px-3 rounded-full flex items-center gap-1 max-w-[100px] md:max-w-none">
-                    <span class="text-xs text-blue-400 font-bold truncate">👤 <span id="display-username">Anak</span></span>
+                <div id="user-pill" class="bg-blue-50 px-2 py-1 md:px-3 rounded-full flex items-center gap-1 max-w-[80px] md:max-w-none overflow-hidden">
+                    <span class="text-xs text-blue-400 font-bold truncate block w-full">👤 <span id="display-username">Anak</span></span>
                 </div>
                 <div id="score-pill" class="bg-yellow-100 px-2 py-1 md:px-3 rounded-full flex items-center gap-1 hidden">
                     <span class="text-xs">⭐</span>
@@ -108,10 +110,10 @@
         </header>
 
         <!-- Main Content Area -->
-        <main id="main-content" class="flex-1 relative overflow-y-auto no-scrollbar bg-orange-50/30 w-full">
+        <main id="main-content" class="flex-1 relative overflow-y-auto no-scrollbar bg-orange-50/30 w-full h-full">
             
             <!-- VIEW: LOGIN / REGISTER (AUTH) -->
-            <div id="view-auth" class="flex flex-col items-center justify-center h-full p-6 md:p-8 bg-white/50 backdrop-blur-sm">
+            <div id="view-auth" class="flex flex-col items-center justify-center min-h-full p-6 md:p-8 bg-white/50 backdrop-blur-sm">
                 <div class="bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] shadow-xl md:shadow-2xl w-full max-w-sm text-center animate-pop border-4 border-white ring-4 ring-orange-100">
                     <div class="text-5xl md:text-6xl mb-4">🦁</div>
                     <h1 class="text-xl md:text-2xl font-bold text-orange-500 mb-2">Selamat Datang!</h1>
@@ -478,11 +480,19 @@
                 currentSyllableData: null,
                 currentTrisyllableData: null,
                 spellingInput: [],
-                readingFlipped: false
+                readingFlipped: false,
+                voices: [] // To store loaded voices
             },
 
             init() {
                 this.loadCustomWords();
+                
+                // Initialize voices
+                this.loadVoices();
+                if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                    window.speechSynthesis.onvoiceschanged = () => this.loadVoices();
+                }
+
                 this.el = {
                     views: {
                         auth: document.getElementById('view-auth'),
@@ -535,6 +545,29 @@
                 window.addEventListener('resize', () => this.resizeCanvas());
 
                 this.checkAuth();
+            },
+
+            // --- VOICE LOGIC ---
+            loadVoices() {
+                this.state.voices = window.speechSynthesis.getVoices();
+            },
+
+            speak(text, rate = 0.9) {
+                if (!this.state.soundEnabled) return;
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                // Try to find Indonesian voice
+                const indoVoice = this.state.voices.find(v => v.lang.includes('id') || v.lang.includes('Indo'));
+                if (indoVoice) {
+                    utterance.voice = indoVoice;
+                }
+                
+                utterance.lang = 'id-ID';
+                utterance.rate = rate;
+                utterance.pitch = 1.1;
+                window.speechSynthesis.speak(utterance);
             },
 
             // --- AUTH LOGIC ---
@@ -593,7 +626,7 @@
                     this.state.currentUser = savedName;
                     this.el.displayName.innerText = savedName;
                     
-                    // Show header, hide auth, go to menu
+                    // Show header properly on mobile
                     this.el.header.classList.remove('hidden');
                     this.el.header.classList.add('flex');
                     this.goHome();
@@ -707,16 +740,6 @@
                 window.speechSynthesis.cancel();
             },
 
-            speak(text, rate = 0.9) {
-                if (!this.state.soundEnabled) return;
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'id-ID';
-                utterance.rate = rate;
-                utterance.pitch = 1.1;
-                window.speechSynthesis.speak(utterance);
-            },
-
             toggleSound() {
                 this.state.soundEnabled = !this.state.soundEnabled;
                 this.el.btnSound.classList.toggle('opacity-50');
@@ -792,12 +815,24 @@
             combineSyllables() {
                 const data = this.state.currentSyllableData;
                 if(!this.state.soundEnabled) { this.revealSyllableSuccess(); return; }
-                const u1 = new SpeechSynthesisUtterance(data.split[0]); u1.lang = 'id-ID'; u1.rate=0.9;
-                const u2 = new SpeechSynthesisUtterance(data.split[1]); u2.lang = 'id-ID'; u2.rate=0.9;
-                const u3 = new SpeechSynthesisUtterance(data.text); u3.lang = 'id-ID'; u3.rate=0.8; u3.pitch=1.2;
+                const u1 = new SpeechSynthesisUtterance(data.split[0]); 
+                this.applyVoice(u1); u1.rate=0.9;
+                
+                const u2 = new SpeechSynthesisUtterance(data.split[1]); 
+                this.applyVoice(u2); u2.rate=0.9;
+                
+                const u3 = new SpeechSynthesisUtterance(data.text); 
+                this.applyVoice(u3); u3.rate=0.8; u3.pitch=1.2;
+                
                 u1.onend = () => window.speechSynthesis.speak(u2);
                 u2.onend = () => { setTimeout(() => { window.speechSynthesis.speak(u3); this.revealSyllableSuccess(); }, 300); };
                 window.speechSynthesis.cancel(); window.speechSynthesis.speak(u1);
+            },
+            // Helper for apply voice to specific utterances
+            applyVoice(utterance) {
+                const indoVoice = this.state.voices.find(v => v.lang.includes('id') || v.lang.includes('Indo'));
+                if (indoVoice) utterance.voice = indoVoice;
+                utterance.lang = 'id-ID';
             },
             revealSyllableSuccess() {
                 const imgContainer = document.getElementById('syllable-image-container');
@@ -830,10 +865,10 @@
                 const data = this.state.currentTrisyllableData;
                 if(!this.state.soundEnabled) { this.revealTriSuccess(); return; }
                 
-                const u1 = new SpeechSynthesisUtterance(data.split[0]); u1.lang = 'id-ID'; u1.rate=1.0;
-                const u2 = new SpeechSynthesisUtterance(data.split[1]); u2.lang = 'id-ID'; u2.rate=1.0;
-                const u3 = new SpeechSynthesisUtterance(data.split[2]); u3.lang = 'id-ID'; u3.rate=1.0;
-                const uFull = new SpeechSynthesisUtterance(data.text); uFull.lang = 'id-ID'; uFull.rate=0.8; uFull.pitch=1.2;
+                const u1 = new SpeechSynthesisUtterance(data.split[0]); this.applyVoice(u1); u1.rate=1.0;
+                const u2 = new SpeechSynthesisUtterance(data.split[1]); this.applyVoice(u2); u2.rate=1.0;
+                const u3 = new SpeechSynthesisUtterance(data.split[2]); this.applyVoice(u3); u3.rate=1.0;
+                const uFull = new SpeechSynthesisUtterance(data.text); this.applyVoice(uFull); uFull.rate=0.8; uFull.pitch=1.2;
 
                 u1.onend = () => window.speechSynthesis.speak(u2);
                 u2.onend = () => window.speechSynthesis.speak(u3);
