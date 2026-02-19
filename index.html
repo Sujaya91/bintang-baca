@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bintang Baca - Metode Montessori Lengkap</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -14,6 +14,7 @@
             background-size: 20px 20px;
             user-select: none;
             overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* Montessori Colors */
@@ -67,40 +68,41 @@
         .perspective-1000 { perspective: 1000px; }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col items-center justify-center text-gray-800">
+<body class="h-screen w-screen flex flex-col items-center justify-center text-gray-800 bg-orange-50/50">
 
     <canvas id="confetti-canvas"></canvas>
 
     <!-- App Container -->
-    <div id="app-container" class="w-full h-full md:h-[90vh] md:w-[600px] md:rounded-[40px] bg-white shadow-2xl relative overflow-hidden flex flex-col border-4 border-white ring-4 ring-orange-50">
+    <!-- Responsive sizing: Full width/height on mobile, fixed rounded card on desktop/tablet -->
+    <div id="app-container" class="w-full h-full md:h-[90vh] md:w-[600px] md:rounded-[40px] bg-white shadow-none md:shadow-2xl relative overflow-hidden flex flex-col md:border-4 md:border-white md:ring-4 md:ring-orange-50">
         
         <!-- Header -->
-        <header id="app-header" class="h-16 px-6 bg-white border-b-2 border-orange-50 flex justify-between items-center z-20 shrink-0 hidden">
-            <div class="flex items-center gap-3">
+        <header id="app-header" class="h-16 px-4 md:px-6 bg-white border-b-2 border-orange-50 flex justify-between items-center z-20 shrink-0 hidden">
+            <div class="flex items-center gap-2">
                 <button id="btn-home" class="p-2 -ml-2 rounded-full hover:bg-orange-50 text-orange-400 transition hidden">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                 </button>
                 <div class="flex flex-col">
-                    <h1 class="text-xl font-bold text-orange-500 leading-tight">Bintang<span class="text-blue-400">Baca</span></h1>
-                    <span id="level-indicator" class="text-[10px] text-gray-400 font-bold uppercase tracking-wider hidden">Menu Utama</span>
+                    <h1 class="text-lg md:text-xl font-bold text-orange-500 leading-tight">Bintang<span class="text-blue-400">Baca</span></h1>
+                    <span id="level-indicator" class="text-[9px] md:text-[10px] text-gray-400 font-bold uppercase tracking-wider hidden">Menu Utama</span>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <div id="user-pill" class="bg-blue-50 px-3 py-1 rounded-full flex items-center gap-1">
-                    <span class="text-xs text-blue-400 font-bold">👤 <span id="display-username">Anak</span></span>
+            <div class="flex items-center gap-1.5 md:gap-2">
+                <div id="user-pill" class="bg-blue-50 px-2 py-1 md:px-3 rounded-full flex items-center gap-1 max-w-[100px] md:max-w-none">
+                    <span class="text-xs text-blue-400 font-bold truncate">👤 <span id="display-username">Anak</span></span>
                 </div>
-                <div id="score-pill" class="bg-yellow-100 px-3 py-1 rounded-full flex items-center gap-1 hidden">
-                    <span>⭐</span>
-                    <span id="score-display" class="font-bold text-yellow-600 text-sm">0</span>
+                <div id="score-pill" class="bg-yellow-100 px-2 py-1 md:px-3 rounded-full flex items-center gap-1 hidden">
+                    <span class="text-xs">⭐</span>
+                    <span id="score-display" class="font-bold text-yellow-600 text-xs md:text-sm">0</span>
                 </div>
-                <button id="btn-add" onclick="app.openAddModal()" class="w-10 h-10 rounded-full bg-green-50 text-green-500 hover:bg-green-100 flex items-center justify-center transition" title="Tambah Kata Sendiri">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <button id="btn-add" onclick="app.openAddModal()" class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-green-50 text-green-500 hover:bg-green-100 flex items-center justify-center transition" title="Tambah Kata">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                 </button>
-                <button id="btn-sound" class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 hover:bg-blue-100 flex items-center justify-center transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                <button id="btn-sound" class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-50 text-blue-500 hover:bg-blue-100 flex items-center justify-center transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
                 </button>
-                <button onclick="app.logout()" class="w-10 h-10 rounded-full bg-red-50 text-red-400 hover:bg-red-100 flex items-center justify-center transition" title="Keluar">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <button onclick="app.logout()" class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-red-50 text-red-400 hover:bg-red-100 flex items-center justify-center transition" title="Keluar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                 </button>
             </div>
         </header>
@@ -109,38 +111,38 @@
         <main id="main-content" class="flex-1 relative overflow-y-auto no-scrollbar bg-orange-50/30 w-full">
             
             <!-- VIEW: LOGIN / REGISTER (AUTH) -->
-            <div id="view-auth" class="flex flex-col items-center justify-center h-full p-8 bg-white/50 backdrop-blur-sm">
-                <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl w-full max-w-sm text-center animate-pop border-4 border-white ring-4 ring-orange-100">
-                    <div class="text-6xl mb-4">🦁</div>
-                    <h1 class="text-2xl font-bold text-orange-500 mb-2">Selamat Datang!</h1>
-                    <p id="auth-subtitle" class="text-gray-400 text-sm mb-6">Silakan masuk untuk belajar</p>
+            <div id="view-auth" class="flex flex-col items-center justify-center h-full p-6 md:p-8 bg-white/50 backdrop-blur-sm">
+                <div class="bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] shadow-xl md:shadow-2xl w-full max-w-sm text-center animate-pop border-4 border-white ring-4 ring-orange-100">
+                    <div class="text-5xl md:text-6xl mb-4">🦁</div>
+                    <h1 class="text-xl md:text-2xl font-bold text-orange-500 mb-2">Selamat Datang!</h1>
+                    <p id="auth-subtitle" class="text-gray-400 text-xs md:text-sm mb-6">Silakan masuk untuk belajar</p>
 
                     <!-- Register Form -->
-                    <div id="form-register" class="hidden space-y-4">
+                    <div id="form-register" class="hidden space-y-3 md:space-y-4">
                         <div class="text-left">
-                            <label class="text-xs font-bold text-gray-400 uppercase ml-2">Nama Kamu</label>
-                            <input id="reg-name" type="text" placeholder="Masukkan Nama" class="w-full p-4 rounded-2xl bg-gray-50 border-2 border-gray-100 focus:border-orange-300 outline-none font-bold text-gray-700 text-lg transition">
+                            <label class="text-[10px] md:text-xs font-bold text-gray-400 uppercase ml-2">Nama Kamu</label>
+                            <input id="reg-name" type="text" placeholder="Masukkan Nama" class="w-full p-3 md:p-4 rounded-2xl bg-gray-50 border-2 border-gray-100 focus:border-orange-300 outline-none font-bold text-gray-700 text-base md:text-lg transition">
                         </div>
                         <div class="text-left">
-                            <label class="text-xs font-bold text-gray-400 uppercase ml-2">ID Pendaftaran</label>
-                            <input id="reg-id" type="password" placeholder="***" class="w-full p-4 rounded-2xl bg-gray-50 border-2 border-gray-100 focus:border-orange-300 outline-none font-bold text-gray-700 text-lg transition">
+                            <label class="text-[10px] md:text-xs font-bold text-gray-400 uppercase ml-2">ID Pendaftaran</label>
+                            <input id="reg-id" type="password" placeholder="***" class="w-full p-3 md:p-4 rounded-2xl bg-gray-50 border-2 border-gray-100 focus:border-orange-300 outline-none font-bold text-gray-700 text-base md:text-lg transition">
                         </div>
-                        <button onclick="app.handleRegister()" class="w-full py-4 bg-orange-400 text-white rounded-2xl font-bold text-xl shadow-lg hover:bg-orange-500 hover:shadow-orange-200 transition transform active:scale-95 mt-4">
+                        <button onclick="app.handleRegister()" class="w-full py-3 md:py-4 bg-orange-400 text-white rounded-2xl font-bold text-lg md:text-xl shadow-lg hover:bg-orange-500 hover:shadow-orange-200 transition transform active:scale-95 mt-4">
                             Daftar Sekarang
                         </button>
                         <p class="text-xs text-gray-400 mt-4">Sudah punya akun? <button onclick="app.toggleAuthMode('login')" class="text-blue-400 font-bold hover:underline">Masuk</button></p>
                     </div>
 
                     <!-- Login Form -->
-                    <div id="form-login" class="hidden space-y-4">
-                        <div class="bg-blue-50 p-4 rounded-2xl mb-4">
-                            <p class="text-blue-400 text-sm font-bold">👋 Halo! Siapa namamu?</p>
+                    <div id="form-login" class="hidden space-y-3 md:space-y-4">
+                        <div class="bg-blue-50 p-3 md:p-4 rounded-2xl mb-4">
+                            <p class="text-blue-400 text-xs md:text-sm font-bold">👋 Halo! Siapa namamu?</p>
                         </div>
                         <div class="text-left">
-                            <label class="text-xs font-bold text-gray-400 uppercase ml-2">Nama Pengguna</label>
-                            <input id="login-name" type="text" placeholder="Ketik namamu..." class="w-full p-4 rounded-2xl bg-gray-50 border-2 border-gray-100 focus:border-blue-300 outline-none font-bold text-gray-700 text-lg transition">
+                            <label class="text-[10px] md:text-xs font-bold text-gray-400 uppercase ml-2">Nama Pengguna</label>
+                            <input id="login-name" type="text" placeholder="Ketik namamu..." class="w-full p-3 md:p-4 rounded-2xl bg-gray-50 border-2 border-gray-100 focus:border-blue-300 outline-none font-bold text-gray-700 text-base md:text-lg transition">
                         </div>
-                        <button onclick="app.handleLogin()" class="w-full py-4 bg-blue-400 text-white rounded-2xl font-bold text-xl shadow-lg hover:bg-blue-500 hover:shadow-blue-200 transition transform active:scale-95 mt-4">
+                        <button onclick="app.handleLogin()" class="w-full py-3 md:py-4 bg-blue-400 text-white rounded-2xl font-bold text-lg md:text-xl shadow-lg hover:bg-blue-500 hover:shadow-blue-200 transition transform active:scale-95 mt-4">
                             Masuk
                         </button>
                         <p id="login-reset-link" class="text-xs text-gray-400 mt-4 hidden">Bukan akunmu? <button onclick="app.logout(true)" class="text-red-400 font-bold hover:underline">Reset</button></p>
@@ -149,66 +151,66 @@
             </div>
 
             <!-- VIEW: MENU UTAMA -->
-            <div id="view-menu" class="hidden p-6 pb-20 flex flex-col gap-4 min-h-full">
-                <div class="text-center py-4 animate-bounce-small">
-                    <h2 class="text-xl font-bold text-gray-700">Mau belajar apa?</h2>
-                    <p class="text-gray-500 text-xs">Pilih tombol di bawah</p>
+            <div id="view-menu" class="hidden p-4 md:p-6 pb-24 md:pb-20 flex flex-col gap-3 md:gap-4 min-h-full">
+                <div class="text-center py-2 md:py-4 animate-bounce-small">
+                    <h2 class="text-lg md:text-xl font-bold text-gray-700">Mau belajar apa?</h2>
+                    <p class="text-gray-500 text-[10px] md:text-xs">Pilih tombol di bawah</p>
                 </div>
 
-                <div class="grid grid-cols-1 gap-3">
-                    <button onclick="app.startLevel('phonics')" class="card bg-white p-4 rounded-3xl border-b-4 border-blue-200 flex items-center gap-4 hover:bg-blue-50">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center text-2xl">👂</div>
+                <div class="grid grid-cols-1 gap-3 pb-safe">
+                    <button onclick="app.startLevel('phonics')" class="card bg-white p-3 md:p-4 rounded-2xl md:rounded-3xl border-b-4 border-blue-200 flex items-center gap-3 md:gap-4 hover:bg-blue-50">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-blue-100 flex items-center justify-center text-xl md:text-2xl">👂</div>
                         <div class="text-left flex-1">
-                            <h3 class="font-bold text-lg text-gray-800">1. Kenal Bunyi</h3>
-                            <p class="text-xs text-gray-400">Belajar bunyi a, i, u, e, o</p>
+                            <h3 class="font-bold text-base md:text-lg text-gray-800">1. Kenal Bunyi</h3>
+                            <p class="text-[10px] md:text-xs text-gray-400">Belajar bunyi a, i, u, e, o</p>
                         </div>
                         <div class="text-blue-300">➜</div>
                     </button>
-                    <button onclick="app.startLevel('vowelSeries')" class="card bg-white p-4 rounded-3xl border-b-4 border-yellow-200 flex items-center gap-4 hover:bg-yellow-50">
-                        <div class="w-12 h-12 rounded-2xl bg-yellow-100 flex items-center justify-center text-2xl">🗣️</div>
+                    <button onclick="app.startLevel('vowelSeries')" class="card bg-white p-3 md:p-4 rounded-2xl md:rounded-3xl border-b-4 border-yellow-200 flex items-center gap-3 md:gap-4 hover:bg-yellow-50">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-yellow-100 flex items-center justify-center text-xl md:text-2xl">🗣️</div>
                         <div class="text-left flex-1">
-                            <h3 class="font-bold text-lg text-gray-800">2. Pola Vokal</h3>
-                            <p class="text-xs text-gray-400">Ba-Bi-Bu-Be-Bo</p>
+                            <h3 class="font-bold text-base md:text-lg text-gray-800">2. Pola Vokal</h3>
+                            <p class="text-[10px] md:text-xs text-gray-400">Ba-Bi-Bu-Be-Bo</p>
                         </div>
                         <div class="text-yellow-300">➜</div>
                     </button>
-                    <button onclick="app.startLevel('syllables')" class="card bg-white p-4 rounded-3xl border-b-4 border-purple-200 flex items-center gap-4 hover:bg-purple-50">
-                        <div class="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center text-2xl">📚</div>
+                    <button onclick="app.startLevel('syllables')" class="card bg-white p-3 md:p-4 rounded-2xl md:rounded-3xl border-b-4 border-purple-200 flex items-center gap-3 md:gap-4 hover:bg-purple-50">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-purple-100 flex items-center justify-center text-xl md:text-2xl">📚</div>
                         <div class="text-left flex-1">
-                            <h3 class="font-bold text-lg text-gray-800">3. Suku Kata</h3>
-                            <p class="text-xs text-gray-400">Ba-ca, Bo-la (2 Suku Kata)</p>
+                            <h3 class="font-bold text-base md:text-lg text-gray-800">3. Suku Kata</h3>
+                            <p class="text-[10px] md:text-xs text-gray-400">Ba-ca, Bo-la (2 Suku Kata)</p>
                         </div>
                         <div class="text-purple-300">➜</div>
                     </button>
-                    <button onclick="app.startLevel('cvc')" class="card bg-white p-4 rounded-3xl border-b-4 border-red-200 flex items-center gap-4 hover:bg-red-50">
-                        <div class="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center text-2xl">🍎</div>
+                    <button onclick="app.startLevel('cvc')" class="card bg-white p-3 md:p-4 rounded-2xl md:rounded-3xl border-b-4 border-red-200 flex items-center gap-3 md:gap-4 hover:bg-red-50">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-red-100 flex items-center justify-center text-xl md:text-2xl">🍎</div>
                         <div class="text-left flex-1">
-                            <h3 class="font-bold text-lg text-gray-800">4. Tiga Huruf</h3>
-                            <p class="text-xs text-gray-400">Jam, Tas, Bis (K-V-K)</p>
+                            <h3 class="font-bold text-base md:text-lg text-gray-800">4. Tiga Huruf</h3>
+                            <p class="text-[10px] md:text-xs text-gray-400">Jam, Tas, Bis (K-V-K)</p>
                         </div>
                         <div class="text-red-300">➜</div>
                     </button>
-                    <button onclick="app.startLevel('trisyllables')" class="card bg-white p-4 rounded-3xl border-b-4 border-indigo-200 flex items-center gap-4 hover:bg-indigo-50">
-                        <div class="w-12 h-12 rounded-2xl bg-indigo-100 flex items-center justify-center text-2xl">🚲</div>
+                    <button onclick="app.startLevel('trisyllables')" class="card bg-white p-3 md:p-4 rounded-2xl md:rounded-3xl border-b-4 border-indigo-200 flex items-center gap-3 md:gap-4 hover:bg-indigo-50">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-indigo-100 flex items-center justify-center text-xl md:text-2xl">🚲</div>
                         <div class="text-left flex-1">
-                            <h3 class="font-bold text-lg text-gray-800">5. Tiga Suku Kata</h3>
-                            <p class="text-xs text-gray-400">Se-pe-da, Se-ko-lah</p>
+                            <h3 class="font-bold text-base md:text-lg text-gray-800">5. Tiga Suku Kata</h3>
+                            <p class="text-[10px] md:text-xs text-gray-400">Se-pe-da, Se-ko-lah</p>
                         </div>
                         <div class="text-indigo-300">➜</div>
                     </button>
-                    <button onclick="app.startLevel('spelling')" class="card bg-white p-4 rounded-3xl border-b-4 border-pink-200 flex items-center gap-4 hover:bg-pink-50">
-                        <div class="w-12 h-12 rounded-2xl bg-pink-100 flex items-center justify-center text-2xl">🧩</div>
+                    <button onclick="app.startLevel('spelling')" class="card bg-white p-3 md:p-4 rounded-2xl md:rounded-3xl border-b-4 border-pink-200 flex items-center gap-3 md:gap-4 hover:bg-pink-50">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-pink-100 flex items-center justify-center text-xl md:text-2xl">🧩</div>
                         <div class="text-left flex-1">
-                            <h3 class="font-bold text-lg text-gray-800">6. Susun Kata</h3>
-                            <p class="text-xs text-gray-400">Latihan mengeja kata</p>
+                            <h3 class="font-bold text-base md:text-lg text-gray-800">6. Susun Kata</h3>
+                            <p class="text-[10px] md:text-xs text-gray-400">Latihan mengeja kata</p>
                         </div>
                         <div class="text-pink-300">➜</div>
                     </button>
-                     <button onclick="app.startLevel('reading')" class="card bg-white p-4 rounded-3xl border-b-4 border-green-200 flex items-center gap-4 hover:bg-green-50">
-                        <div class="w-12 h-12 rounded-2xl bg-green-100 flex items-center justify-center text-2xl">📖</div>
+                     <button onclick="app.startLevel('reading')" class="card bg-white p-3 md:p-4 rounded-2xl md:rounded-3xl border-b-4 border-green-200 flex items-center gap-3 md:gap-4 hover:bg-green-50">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-green-100 flex items-center justify-center text-xl md:text-2xl">📖</div>
                         <div class="text-left flex-1">
-                            <h3 class="font-bold text-lg text-gray-800">7. Kartu Baca</h3>
-                            <p class="text-xs text-gray-400">Tebak kata dan gambar</p>
+                            <h3 class="font-bold text-base md:text-lg text-gray-800">7. Kartu Baca</h3>
+                            <p class="text-[10px] md:text-xs text-gray-400">Tebak kata dan gambar</p>
                         </div>
                         <div class="text-green-300">➜</div>
                     </button>
@@ -216,142 +218,145 @@
             </div>
 
             <!-- VIEW: PHONICS -->
-            <div id="view-phonics" class="hidden h-full flex flex-col items-center justify-center p-6 text-center">
-                <div id="phonics-card" class="w-64 h-80 bg-[#DEB887] rounded-[3rem] p-4 shadow-xl cursor-pointer transform transition active:scale-95 flex items-center justify-center relative border-8 border-[#C19A6B]">
-                    <div class="w-full h-full bg-[#fdfbf7] rounded-[2rem] flex items-center justify-center shadow-inner relative overflow-hidden">
+            <div id="view-phonics" class="hidden h-full flex flex-col items-center justify-center p-4 md:p-6 text-center">
+                <div id="phonics-card" class="w-56 h-72 md:w-64 md:h-80 bg-[#DEB887] rounded-[2rem] md:rounded-[3rem] p-3 md:p-4 shadow-xl cursor-pointer transform transition active:scale-95 flex items-center justify-center relative border-4 md:border-8 border-[#C19A6B]">
+                    <div class="w-full h-full bg-[#fdfbf7] rounded-[1.5rem] md:rounded-[2rem] flex items-center justify-center shadow-inner relative overflow-hidden">
                         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]"></div>
-                        <span id="phonics-letter" class="text-[160px] font-bold text-consonant sandpaper-text select-none relative z-10">a</span>
+                        <span id="phonics-letter" class="text-[100px] md:text-[160px] font-bold text-consonant sandpaper-text select-none relative z-10">a</span>
                     </div>
                 </div>
-                <div class="absolute bottom-8 w-full px-8 flex justify-between max-w-md">
-                    <button onclick="app.navPhonics(-1)" class="w-14 h-14 bg-white rounded-full shadow-lg text-gray-400 flex items-center justify-center hover:scale-110 transition">◀</button>
-                    <button onclick="app.navPhonics(1)" class="w-14 h-14 bg-orange-400 text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition">▶</button>
+                <div class="absolute bottom-6 md:bottom-8 w-full px-6 md:px-8 flex justify-between max-w-md">
+                    <button onclick="app.navPhonics(-1)" class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-full shadow-lg text-gray-400 flex items-center justify-center hover:scale-110 transition">◀</button>
+                    <button onclick="app.navPhonics(1)" class="w-12 h-12 md:w-14 md:h-14 bg-orange-400 text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition">▶</button>
                 </div>
             </div>
 
             <!-- VIEW: VOWEL SERIES -->
-            <div id="view-vowel-series" class="hidden h-full flex flex-col items-center p-6">
-                <div class="flex justify-between items-center w-full mb-8 bg-white p-2 rounded-2xl shadow-sm">
-                    <button onclick="app.navVowelSeries(-1)" class="p-3 bg-gray-100 rounded-xl hover:bg-gray-200 text-gray-600 transition">◀</button>
+            <div id="view-vowel-series" class="hidden h-full flex flex-col items-center p-4 md:p-6">
+                <div class="flex justify-between items-center w-full mb-4 md:mb-8 bg-white p-2 rounded-xl md:rounded-2xl shadow-sm">
+                    <button onclick="app.navVowelSeries(-1)" class="p-2 md:p-3 bg-gray-100 rounded-lg md:rounded-xl hover:bg-gray-200 text-gray-600 transition">◀</button>
                     <div class="text-center">
-                        <span class="text-xs text-gray-400 font-bold uppercase">Huruf</span>
-                        <h2 id="vs-consonant-title" class="text-3xl font-bold text-orange-500 uppercase">B</h2>
+                        <span class="text-[10px] md:text-xs text-gray-400 font-bold uppercase">Huruf</span>
+                        <h2 id="vs-consonant-title" class="text-2xl md:text-3xl font-bold text-orange-500 uppercase">B</h2>
                     </div>
-                    <button onclick="app.navVowelSeries(1)" class="p-3 bg-orange-100 rounded-xl hover:bg-orange-200 text-orange-600 transition">▶</button>
+                    <button onclick="app.navVowelSeries(1)" class="p-2 md:p-3 bg-orange-100 rounded-lg md:rounded-xl hover:bg-orange-200 text-orange-600 transition">▶</button>
                 </div>
-                <div id="vs-container" class="grid grid-cols-2 gap-4 w-full max-w-sm"></div>
+                <div id="vs-container" class="grid grid-cols-2 gap-3 md:gap-4 w-full max-w-sm"></div>
             </div>
 
             <!-- VIEW: 2 SYLLABLES -->
-            <div id="view-syllables" class="hidden h-full flex flex-col items-center pt-8 px-4">
-                <div class="h-40 w-full flex items-center justify-center mb-6">
-                    <div id="syllable-image-container" class="w-32 h-32 bg-white rounded-3xl shadow-lg flex items-center justify-center text-6xl transition-all duration-500 transform scale-0 opacity-0 border-4 border-white">
+            <div id="view-syllables" class="hidden h-full flex flex-col items-center pt-4 md:pt-8 px-4">
+                <div class="h-32 md:h-40 w-full flex items-center justify-center mb-4 md:mb-6">
+                    <div id="syllable-image-container" class="w-24 h-24 md:w-32 md:h-32 bg-white rounded-2xl md:rounded-3xl shadow-lg flex items-center justify-center text-5xl md:text-6xl transition-all duration-500 transform scale-0 opacity-0 border-4 border-white">
                         <span id="syllable-emoji">🍎</span>
                     </div>
                 </div>
-                <div class="flex gap-4 items-center justify-center mb-12">
-                    <button id="syl-btn-1" onclick="app.playSyllable(0)" class="card w-36 h-48 rounded-3xl bg-syllable-1 border-b-8 flex items-center justify-center shadow-lg group relative overflow-hidden">
-                        <span id="syl-text-1" class="text-6xl font-bold text-vowel lowercase group-hover:scale-110 transition-transform">ba</span>
+                <div class="flex gap-2 md:gap-4 items-center justify-center mb-8 md:mb-12">
+                    <button id="syl-btn-1" onclick="app.playSyllable(0)" class="card w-28 h-40 md:w-36 md:h-48 rounded-2xl md:rounded-3xl bg-syllable-1 border-b-8 flex items-center justify-center shadow-lg group relative overflow-hidden">
+                        <span id="syl-text-1" class="text-5xl md:text-6xl font-bold text-vowel lowercase group-hover:scale-110 transition-transform">ba</span>
                     </button>
-                    <button id="syl-btn-2" onclick="app.playSyllable(1)" class="card w-36 h-48 rounded-3xl bg-syllable-2 border-b-8 flex items-center justify-center shadow-lg group relative overflow-hidden">
-                        <span id="syl-text-2" class="text-6xl font-bold text-consonant lowercase group-hover:scale-110 transition-transform">ca</span>
+                    <button id="syl-btn-2" onclick="app.playSyllable(1)" class="card w-28 h-40 md:w-36 md:h-48 rounded-2xl md:rounded-3xl bg-syllable-2 border-b-8 flex items-center justify-center shadow-lg group relative overflow-hidden">
+                        <span id="syl-text-2" class="text-5xl md:text-6xl font-bold text-consonant lowercase group-hover:scale-110 transition-transform">ca</span>
                     </button>
                 </div>
-                <div class="w-full max-w-xs flex flex-col gap-3">
-                    <button onclick="app.combineSyllables()" class="w-full py-4 bg-orange-400 text-white rounded-2xl font-bold text-xl shadow-lg hover:bg-orange-500 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                <div class="w-full max-w-xs flex flex-col gap-2 md:gap-3">
+                    <button onclick="app.combineSyllables()" class="w-full py-3 md:py-4 bg-orange-400 text-white rounded-xl md:rounded-2xl font-bold text-lg md:text-xl shadow-lg hover:bg-orange-500 transition-all transform active:scale-95 flex items-center justify-center gap-2">
                         <span>Gabung & Baca</span> 🗣️
                     </button>
-                    <button onclick="app.nextSyllableWord()" class="w-full py-3 bg-white text-gray-500 rounded-2xl font-bold border-2 border-gray-100 hover:bg-gray-50 transition-colors">
+                    <button onclick="app.nextSyllableWord()" class="w-full py-2.5 md:py-3 bg-white text-gray-500 rounded-xl md:rounded-2xl font-bold border-2 border-gray-100 hover:bg-gray-50 transition-colors">
                         Kata Selanjutnya ➜
                     </button>
                 </div>
             </div>
 
             <!-- VIEW: 3 SYLLABLES -->
-            <div id="view-trisyllables" class="hidden h-full flex flex-col items-center pt-8 px-2">
-                <div class="h-32 w-full flex items-center justify-center mb-4">
-                    <div id="tri-image-container" class="w-28 h-28 bg-white rounded-3xl shadow-lg flex items-center justify-center text-6xl transition-all duration-500 transform scale-0 opacity-0 border-4 border-white">
+            <div id="view-trisyllables" class="hidden h-full flex flex-col items-center pt-4 md:pt-8 px-2">
+                <div class="h-28 md:h-32 w-full flex items-center justify-center mb-2 md:mb-4">
+                    <div id="tri-image-container" class="w-24 h-24 md:w-28 md:h-28 bg-white rounded-2xl md:rounded-3xl shadow-lg flex items-center justify-center text-5xl md:text-6xl transition-all duration-500 transform scale-0 opacity-0 border-4 border-white">
                         <span id="tri-emoji">🚲</span>
                     </div>
                 </div>
-                <div class="flex gap-2 items-center justify-center mb-10 w-full max-w-md">
-                    <button id="tri-btn-0" onclick="app.playTrisyllable(0)" class="card flex-1 h-36 rounded-2xl bg-syllable-1 border-b-8 flex items-center justify-center shadow-lg group relative overflow-hidden">
-                        <span id="tri-text-0" class="text-3xl md:text-4xl font-bold text-vowel lowercase">se</span>
+                
+                <!-- 3 Cards Grid -->
+                <div class="flex gap-1.5 md:gap-2 items-center justify-center mb-6 md:mb-10 w-full max-w-md">
+                    <button id="tri-btn-0" onclick="app.playTrisyllable(0)" class="card flex-1 h-28 md:h-36 rounded-xl md:rounded-2xl bg-syllable-1 border-b-4 md:border-b-8 flex items-center justify-center shadow-md md:shadow-lg group relative overflow-hidden">
+                        <span id="tri-text-0" class="text-2xl md:text-4xl font-bold text-vowel lowercase">se</span>
                     </button>
-                    <button id="tri-btn-1" onclick="app.playTrisyllable(1)" class="card flex-1 h-36 rounded-2xl bg-syllable-2 border-b-8 flex items-center justify-center shadow-lg group relative overflow-hidden">
-                        <span id="tri-text-1" class="text-3xl md:text-4xl font-bold text-consonant lowercase">pe</span>
+                    <button id="tri-btn-1" onclick="app.playTrisyllable(1)" class="card flex-1 h-28 md:h-36 rounded-xl md:rounded-2xl bg-syllable-2 border-b-4 md:border-b-8 flex items-center justify-center shadow-md md:shadow-lg group relative overflow-hidden">
+                        <span id="tri-text-1" class="text-2xl md:text-4xl font-bold text-consonant lowercase">pe</span>
                     </button>
-                    <button id="tri-btn-2" onclick="app.playTrisyllable(2)" class="card flex-1 h-36 rounded-2xl bg-syllable-3 border-b-8 flex items-center justify-center shadow-lg group relative overflow-hidden">
-                        <span id="tri-text-2" class="text-3xl md:text-4xl font-bold text-orange-500 lowercase">da</span>
+                    <button id="tri-btn-2" onclick="app.playTrisyllable(2)" class="card flex-1 h-28 md:h-36 rounded-xl md:rounded-2xl bg-syllable-3 border-b-4 md:border-b-8 flex items-center justify-center shadow-md md:shadow-lg group relative overflow-hidden">
+                        <span id="tri-text-2" class="text-2xl md:text-4xl font-bold text-orange-500 lowercase">da</span>
                     </button>
                 </div>
-                <div class="w-full max-w-xs flex flex-col gap-3">
-                    <button onclick="app.combineTrisyllables()" class="w-full py-4 bg-indigo-400 text-white rounded-2xl font-bold text-xl shadow-lg hover:bg-indigo-500 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+
+                <div class="w-full max-w-xs flex flex-col gap-2 md:gap-3">
+                    <button onclick="app.combineTrisyllables()" class="w-full py-3 md:py-4 bg-indigo-400 text-white rounded-xl md:rounded-2xl font-bold text-lg md:text-xl shadow-lg hover:bg-indigo-500 transition-all transform active:scale-95 flex items-center justify-center gap-2">
                         <span>Gabung & Baca</span> 🗣️
                     </button>
-                    <button onclick="app.nextTrisyllableWord()" class="w-full py-3 bg-white text-gray-500 rounded-2xl font-bold border-2 border-gray-100 hover:bg-gray-50 transition-colors">
+                    <button onclick="app.nextTrisyllableWord()" class="w-full py-2.5 md:py-3 bg-white text-gray-500 rounded-xl md:rounded-2xl font-bold border-2 border-gray-100 hover:bg-gray-50 transition-colors">
                         Kata Selanjutnya ➜
                     </button>
                 </div>
             </div>
 
             <!-- VIEW: CVC (TIGA HURUF) -->
-            <div id="view-cvc" class="hidden h-full flex flex-col items-center pt-8 px-4">
-                <div class="h-32 w-full flex items-center justify-center mb-4">
-                    <div class="w-28 h-28 bg-white rounded-3xl shadow-sm flex items-center justify-center text-6xl border-2 border-gray-100">
+            <div id="view-cvc" class="hidden h-full flex flex-col items-center pt-4 md:pt-8 px-4">
+                <div class="h-28 md:h-32 w-full flex items-center justify-center mb-4">
+                    <div class="w-24 h-24 md:w-28 md:h-28 bg-white rounded-2xl md:rounded-3xl shadow-sm flex items-center justify-center text-5xl md:text-6xl border-2 border-gray-100">
                         <span id="cvc-emoji">🚌</span>
                     </div>
                 </div>
-                <div class="flex gap-2 items-center justify-center mb-12">
-                    <button onclick="app.playCvcLetter(0)" class="card w-20 h-28 md:w-24 md:h-32 rounded-2xl bg-white border-b-4 border-blue-200 flex items-center justify-center shadow-md active:bg-blue-50">
-                        <span id="cvc-l1" class="text-5xl font-bold text-consonant lowercase">b</span>
+                <div class="flex gap-2 items-center justify-center mb-8 md:mb-12">
+                    <button onclick="app.playCvcLetter(0)" class="card w-16 h-24 md:w-24 md:h-32 rounded-xl md:rounded-2xl bg-white border-b-4 border-blue-200 flex items-center justify-center shadow-md active:bg-blue-50">
+                        <span id="cvc-l1" class="text-4xl md:text-5xl font-bold text-consonant lowercase">b</span>
                     </button>
-                    <button onclick="app.playCvcLetter(1)" class="card w-20 h-28 md:w-24 md:h-32 rounded-2xl bg-white border-b-4 border-pink-200 flex items-center justify-center shadow-md active:bg-pink-50">
-                        <span id="cvc-l2" class="text-5xl font-bold text-vowel lowercase">i</span>
+                    <button onclick="app.playCvcLetter(1)" class="card w-16 h-24 md:w-24 md:h-32 rounded-xl md:rounded-2xl bg-white border-b-4 border-pink-200 flex items-center justify-center shadow-md active:bg-pink-50">
+                        <span id="cvc-l2" class="text-4xl md:text-5xl font-bold text-vowel lowercase">i</span>
                     </button>
-                    <button onclick="app.playCvcLetter(2)" class="card w-20 h-28 md:w-24 md:h-32 rounded-2xl bg-white border-b-4 border-blue-200 flex items-center justify-center shadow-md active:bg-blue-50">
-                        <span id="cvc-l3" class="text-5xl font-bold text-consonant lowercase">s</span>
+                    <button onclick="app.playCvcLetter(2)" class="card w-16 h-24 md:w-24 md:h-32 rounded-xl md:rounded-2xl bg-white border-b-4 border-blue-200 flex items-center justify-center shadow-md active:bg-blue-50">
+                        <span id="cvc-l3" class="text-4xl md:text-5xl font-bold text-consonant lowercase">s</span>
                     </button>
                 </div>
-                <div class="w-full max-w-xs flex flex-col gap-3">
-                     <button onclick="app.playCvcWord()" class="w-full py-4 bg-red-400 text-white rounded-2xl font-bold text-xl shadow-lg hover:bg-red-500 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                <div class="w-full max-w-xs flex flex-col gap-2 md:gap-3">
+                     <button onclick="app.playCvcWord()" class="w-full py-3 md:py-4 bg-red-400 text-white rounded-xl md:rounded-2xl font-bold text-lg md:text-xl shadow-lg hover:bg-red-500 transition-all transform active:scale-95 flex items-center justify-center gap-2">
                         <span>Baca Kata</span> 🔊
                     </button>
                     <div class="flex gap-2">
-                        <button onclick="app.navCvc(-1)" class="flex-1 py-3 bg-white text-gray-500 rounded-2xl font-bold border-2 border-gray-100 hover:bg-gray-50">◀</button>
-                        <button onclick="app.navCvc(1)" class="flex-1 py-3 bg-white text-gray-500 rounded-2xl font-bold border-2 border-gray-100 hover:bg-gray-50">▶</button>
+                        <button onclick="app.navCvc(-1)" class="flex-1 py-2.5 md:py-3 bg-white text-gray-500 rounded-xl md:rounded-2xl font-bold border-2 border-gray-100 hover:bg-gray-50">◀</button>
+                        <button onclick="app.navCvc(1)" class="flex-1 py-2.5 md:py-3 bg-white text-gray-500 rounded-xl md:rounded-2xl font-bold border-2 border-gray-100 hover:bg-gray-50">▶</button>
                     </div>
                 </div>
             </div>
 
             <!-- VIEW: SPELLING -->
             <div id="view-spelling" class="hidden h-full flex flex-col">
-                <div class="flex-1 flex flex-col items-center justify-center gap-6 py-4">
-                    <div class="w-28 h-28 bg-white rounded-2xl shadow-sm flex items-center justify-center text-6xl border border-gray-100 animate-pop">
+                <div class="flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 py-4">
+                    <div class="w-20 h-20 md:w-28 md:h-28 bg-white rounded-2xl shadow-sm flex items-center justify-center text-5xl md:text-6xl border border-gray-100 animate-pop">
                         <span id="spelling-emoji"></span>
                     </div>
-                    <div id="spelling-slots" class="flex gap-2 justify-center flex-wrap px-4"></div>
+                    <div id="spelling-slots" class="flex gap-1.5 md:gap-2 justify-center flex-wrap px-2 md:px-4"></div>
                 </div>
-                <div class="bg-white rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.05)] p-6 z-10">
-                    <div id="spelling-keyboard" class="flex flex-wrap justify-center gap-2"></div>
+                <div class="bg-white rounded-t-[2rem] md:rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.05)] p-4 md:p-6 z-10">
+                    <div id="spelling-keyboard" class="flex flex-wrap justify-center gap-1.5 md:gap-2"></div>
                 </div>
             </div>
 
             <!-- VIEW: READING -->
             <div id="view-reading" class="hidden h-full flex flex-col items-center justify-center p-6">
-                <div id="reading-card-container" class="perspective-1000 w-64 h-80 cursor-pointer group" onclick="app.flipReadingCard()">
-                    <div id="reading-card-inner" class="relative w-full h-full transition-transform duration-700 transform-style-3d shadow-2xl rounded-3xl">
-                        <div class="absolute w-full h-full backface-hidden bg-white rounded-3xl flex items-center justify-center border-b-8 border-gray-200">
-                            <span id="reading-text" class="text-5xl font-bold text-gray-800 tracking-wide">buku</span>
-                            <div class="absolute bottom-6 text-gray-300 text-xs uppercase tracking-widest font-bold">Ketuk Kartu</div>
+                <div id="reading-card-container" class="perspective-1000 w-56 h-72 md:w-64 md:h-80 cursor-pointer group" onclick="app.flipReadingCard()">
+                    <div id="reading-card-inner" class="relative w-full h-full transition-transform duration-700 transform-style-3d shadow-2xl rounded-[1.5rem] md:rounded-3xl">
+                        <div class="absolute w-full h-full backface-hidden bg-white rounded-[1.5rem] md:rounded-3xl flex items-center justify-center border-b-8 border-gray-200 px-2 text-center">
+                            <span id="reading-text" class="text-4xl md:text-5xl font-bold text-gray-800 tracking-wide break-words">buku</span>
+                            <div class="absolute bottom-6 text-gray-300 text-[10px] md:text-xs uppercase tracking-widest font-bold">Ketuk Kartu</div>
                         </div>
-                        <div class="absolute w-full h-full backface-hidden bg-blue-50 rounded-3xl flex flex-col items-center justify-center border-b-8 border-blue-200 rotate-y-180">
-                            <span id="reading-emoji" class="text-8xl mb-4 drop-shadow-md">📖</span>
-                            <span class="text-2xl font-bold text-blue-500">Hebat!</span>
+                        <div class="absolute w-full h-full backface-hidden bg-blue-50 rounded-[1.5rem] md:rounded-3xl flex flex-col items-center justify-center border-b-8 border-blue-200 rotate-y-180">
+                            <span id="reading-emoji" class="text-7xl md:text-8xl mb-4 drop-shadow-md">📖</span>
+                            <span class="text-xl md:text-2xl font-bold text-blue-500">Hebat!</span>
                         </div>
                     </div>
                 </div>
-                <button onclick="app.nextReadingCard()" class="mt-12 px-8 py-3 bg-white border-2 border-blue-100 text-blue-500 rounded-full font-bold hover:bg-blue-50 transition">
+                <button onclick="app.nextReadingCard()" class="mt-8 md:mt-12 px-6 py-2 md:px-8 md:py-3 bg-white border-2 border-blue-100 text-blue-500 rounded-full font-bold hover:bg-blue-50 transition text-sm md:text-base">
                     Kata Berikutnya ➜
                 </button>
             </div>
@@ -361,41 +366,41 @@
 
     <!-- Add Word Modal -->
     <div id="modal-add" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 backdrop-blur-sm px-4">
-        <div class="bg-white p-6 rounded-[2rem] shadow-2xl w-full max-w-sm animate-pop relative">
+        <div class="bg-white p-5 md:p-6 rounded-[1.5rem] md:rounded-[2rem] shadow-2xl w-full max-w-sm animate-pop relative">
             <button onclick="app.closeAddModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 font-bold text-xl">✕</button>
-            <h2 class="text-xl font-bold text-gray-700 mb-4 text-center">Tambah Kata Sendiri</h2>
-            <div class="space-y-4">
+            <h2 class="text-lg md:text-xl font-bold text-gray-700 mb-4 text-center">Tambah Kata Sendiri</h2>
+            <div class="space-y-3 md:space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Kategori</label>
-                    <select id="input-category" class="w-full p-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:border-orange-300 outline-none transition font-semibold text-gray-700">
+                    <label class="block text-[10px] md:text-xs font-bold text-gray-400 uppercase mb-1">Kategori</label>
+                    <select id="input-category" class="w-full p-2.5 md:p-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:border-orange-300 outline-none transition font-semibold text-gray-700 text-sm md:text-base">
                         <option value="syllableWords">2 Suku Kata (Contoh: Ba-ca)</option>
                         <option value="trisyllableWords">3 Suku Kata (Contoh: Se-pe-da)</option>
                         <option value="cvcWords">3 Huruf (Contoh: Jam)</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Kata</label>
-                    <input id="input-word" type="text" placeholder="Contoh: sapu" class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-orange-300 outline-none transition">
+                    <label class="block text-[10px] md:text-xs font-bold text-gray-400 uppercase mb-1">Kata</label>
+                    <input id="input-word" type="text" placeholder="Contoh: sapu" class="w-full p-2.5 md:p-3 rounded-xl border-2 border-gray-200 focus:border-orange-300 outline-none transition text-sm md:text-base">
                 </div>
                 <div id="split-input-group">
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Pemenggalan (Pakai tanda -)</label>
-                    <input id="input-split" type="text" placeholder="Contoh: sa-pu" class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-orange-300 outline-none transition">
+                    <label class="block text-[10px] md:text-xs font-bold text-gray-400 uppercase mb-1">Pemenggalan (Pakai tanda -)</label>
+                    <input id="input-split" type="text" placeholder="Contoh: sa-pu" class="w-full p-2.5 md:p-3 rounded-xl border-2 border-gray-200 focus:border-orange-300 outline-none transition text-sm md:text-base">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Emoji (Opsional)</label>
-                    <input id="input-emoji" type="text" placeholder="Contoh: 🧹" class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-orange-300 outline-none transition">
+                    <label class="block text-[10px] md:text-xs font-bold text-gray-400 uppercase mb-1">Emoji (Opsional)</label>
+                    <input id="input-emoji" type="text" placeholder="Contoh: 🧹" class="w-full p-2.5 md:p-3 rounded-xl border-2 border-gray-200 focus:border-orange-300 outline-none transition text-sm md:text-base">
                 </div>
             </div>
-            <button onclick="app.saveCustomWord()" class="w-full py-3 bg-green-400 text-white rounded-xl font-bold hover:bg-green-500 shadow-lg mt-6 transition transform active:scale-95">Simpan Kata</button>
+            <button onclick="app.saveCustomWord()" class="w-full py-2.5 md:py-3 bg-green-400 text-white rounded-xl font-bold hover:bg-green-500 shadow-lg mt-5 md:mt-6 transition transform active:scale-95 text-sm md:text-base">Simpan Kata</button>
         </div>
     </div>
 
     <!-- Feedback Modal -->
     <div id="modal-feedback" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 backdrop-blur-sm px-4">
-        <div class="bg-white p-8 rounded-[2rem] shadow-2xl flex flex-col items-center animate-pop max-w-sm w-full text-center">
-            <span class="text-7xl mb-4">🌟</span>
-            <h2 class="text-3xl font-bold text-orange-500 mb-2">Luar Biasa!</h2>
-            <button onclick="app.closeModal()" class="w-full py-3 bg-orange-400 text-white rounded-xl font-bold hover:bg-orange-500 shadow-lg mt-4">Lanjut Main</button>
+        <div class="bg-white p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] shadow-2xl flex flex-col items-center animate-pop max-w-sm w-full text-center">
+            <span class="text-6xl md:text-7xl mb-4">🌟</span>
+            <h2 class="text-2xl md:text-3xl font-bold text-orange-500 mb-2">Luar Biasa!</h2>
+            <button onclick="app.closeModal()" class="w-full py-2.5 md:py-3 bg-orange-400 text-white rounded-xl font-bold hover:bg-orange-500 shadow-lg mt-4 text-sm md:text-base">Lanjut Main</button>
         </div>
     </div>
 
@@ -723,7 +728,7 @@
                 const display = document.getElementById('phonics-letter');
                 display.innerText = letter;
                 const isVowel = ['a','i','u','e','o'].includes(letter);
-                display.className = `text-[160px] font-bold sandpaper-text select-none relative z-10 ${isVowel ? 'text-vowel' : 'text-consonant'}`;
+                display.className = `text-[100px] md:text-[160px] font-bold sandpaper-text select-none relative z-10 ${isVowel ? 'text-vowel' : 'text-consonant'}`;
                 setTimeout(() => this.speak(letter), 400);
             },
             navPhonics(direction) {
@@ -743,7 +748,7 @@
                     const syllableText = cons + v;
                     const btn = document.createElement('button');
                     const isFullWidth = v === 'o'; 
-                    btn.className = `p-4 rounded-2xl shadow-md border-b-4 bg-white active:scale-95 transition-all flex flex-col items-center justify-center ${isFullWidth ? 'col-span-2 md:col-span-1' : ''}`;
+                    btn.className = `p-3 md:p-4 rounded-xl md:rounded-2xl shadow-md border-b-4 bg-white active:scale-95 transition-all flex flex-col items-center justify-center ${isFullWidth ? 'col-span-2 md:col-span-1' : ''}`;
                     let vowelColor = 'text-gray-700';
                     let borderColor = 'border-gray-200';
                     if(v === 'a') { vowelColor = 'text-red-400'; borderColor = 'border-red-200'; }
@@ -752,7 +757,7 @@
                     if(v === 'e') { vowelColor = 'text-blue-400'; borderColor = 'border-blue-200'; }
                     if(v === 'o') { vowelColor = 'text-orange-400'; borderColor = 'border-orange-200'; }
                     btn.classList.add(borderColor);
-                    btn.innerHTML = `<span class="text-4xl font-bold text-gray-800">${cons}<span class="${vowelColor}">${v}</span></span>`;
+                    btn.innerHTML = `<span class="text-3xl md:text-4xl font-bold text-gray-800">${cons}<span class="${vowelColor}">${v}</span></span>`;
                     btn.onclick = () => {
                         this.speak(syllableText);
                         btn.classList.add('scale-95', 'bg-gray-50');
@@ -886,8 +891,8 @@
                 slotsContainer.innerHTML = '';
                 this.state.currentWord.letters.forEach((_, index) => {
                     const slot = document.createElement('div');
-                    const sizeClass = this.state.currentWord.letters.length > 5 ? 'w-8 h-10 md:w-12 md:h-16 text-xl' : 'w-12 h-14 md:w-16 md:h-20 text-3xl';
-                    slot.className = `${sizeClass} bg-gray-100 border-2 border-gray-300 rounded-xl flex items-center justify-center font-bold text-gray-700 cursor-pointer transition`;
+                    const sizeClass = this.state.currentWord.letters.length > 5 ? 'w-8 h-10 md:w-12 md:h-16 text-xl md:text-2xl' : 'w-10 h-12 md:w-16 md:h-20 text-2xl md:text-3xl';
+                    slot.className = `${sizeClass} bg-gray-100 border-2 border-gray-300 rounded-lg md:rounded-xl flex items-center justify-center font-bold text-gray-700 cursor-pointer transition`;
                     slot.onclick = () => this.removeSpellingLetter(index);
                     slot.id = `slot-${index}`;
                     slotsContainer.appendChild(slot);
@@ -900,7 +905,7 @@
                 pool.forEach(char => {
                     const btn = document.createElement('button');
                     const isVowel = ['a','i','u','e','o'].includes(char);
-                    btn.className = `w-10 h-12 md:w-12 md:h-14 rounded-xl shadow-[0_4px_0_rgb(0,0,0,0.1)] text-xl font-bold hover:-translate-y-1 transition active:translate-y-1 active:shadow-none mb-2 ${isVowel ? 'bg-pink-100 text-pink-500' : 'bg-blue-100 text-blue-500'}`;
+                    btn.className = `w-9 h-11 md:w-12 md:h-14 rounded-lg md:rounded-xl shadow-[0_3px_0_rgb(0,0,0,0.1)] md:shadow-[0_4px_0_rgb(0,0,0,0.1)] text-lg md:text-xl font-bold hover:-translate-y-1 transition active:translate-y-1 active:shadow-none mb-1.5 md:mb-2 ${isVowel ? 'bg-pink-100 text-pink-500' : 'bg-blue-100 text-blue-500'}`;
                     btn.innerText = char;
                     btn.onclick = () => { this.speak(char); this.typeSpellingLetter(char); };
                     keyboard.appendChild(btn);
@@ -912,8 +917,8 @@
                     this.state.spellingInput[idx] = char;
                     const slot = document.getElementById(`slot-${idx}`);
                     slot.innerText = char;
-                    const sizeClass = this.state.currentWord.letters.length > 5 ? 'w-8 h-10 md:w-12 md:h-16 text-xl' : 'w-12 h-14 md:w-16 md:h-20 text-3xl';
-                    slot.className = `${sizeClass} bg-white border-2 border-orange-300 rounded-xl flex items-center justify-center font-bold text-orange-500 cursor-pointer transition shadow-md transform scale-105`;
+                    const sizeClass = this.state.currentWord.letters.length > 5 ? 'w-8 h-10 md:w-12 md:h-16 text-xl md:text-2xl' : 'w-10 h-12 md:w-16 md:h-20 text-2xl md:text-3xl';
+                    slot.className = `${sizeClass} bg-white border-2 border-orange-300 rounded-lg md:rounded-xl flex items-center justify-center font-bold text-orange-500 cursor-pointer transition shadow-md transform scale-105`;
                     if (!this.state.spellingInput.includes('')) this.checkSpelling();
                 }
             },
@@ -922,8 +927,8 @@
                     this.state.spellingInput[index] = '';
                     const slot = document.getElementById(`slot-${index}`);
                     slot.innerText = '';
-                    const sizeClass = this.state.currentWord.letters.length > 5 ? 'w-8 h-10 md:w-12 md:h-16 text-xl' : 'w-12 h-14 md:w-16 md:h-20 text-3xl';
-                    slot.className = `${sizeClass} bg-gray-100 border-2 border-gray-300 rounded-xl flex items-center justify-center font-bold text-gray-700 cursor-pointer transition`;
+                    const sizeClass = this.state.currentWord.letters.length > 5 ? 'w-8 h-10 md:w-12 md:h-16 text-xl md:text-2xl' : 'w-10 h-12 md:w-16 md:h-20 text-2xl md:text-3xl';
+                    slot.className = `${sizeClass} bg-gray-100 border-2 border-gray-300 rounded-lg md:rounded-xl flex items-center justify-center font-bold text-gray-700 cursor-pointer transition`;
                 }
             },
             checkSpelling() {
@@ -946,7 +951,7 @@
                 this.state.currentWord = data;
                 const textEl = document.getElementById('reading-text');
                 textEl.innerText = data.text;
-                textEl.className = data.text.length > 7 ? 'text-4xl font-bold text-gray-800 tracking-wide' : 'text-5xl font-bold text-gray-800 tracking-wide';
+                textEl.className = data.text.length > 7 ? 'text-3xl md:text-4xl font-bold text-gray-800 tracking-wide break-words' : 'text-4xl md:text-5xl font-bold text-gray-800 tracking-wide break-words';
                 document.getElementById('reading-emoji').innerText = data.emoji;
             },
             flipReadingCard() {
